@@ -1,0 +1,20 @@
+# secrets (ดูตัวอย่างใน README)
+.env
+.env.*
+!.env.example
+
+# ข้อมูลจริงของ container (Postgres / MinIO)
+databasepg/
+minio-data/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

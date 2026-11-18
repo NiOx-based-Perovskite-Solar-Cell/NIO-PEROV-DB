@@ -1,0 +1,47 @@
+# รันแยก:  docker compose up -d   (ใน folder nio-perov-db)
+# ต้องสร้าง network ก่อนครั้งแรก:  docker network create nio-perov-net
+# ค่า DB_* / MINIO_ROOT_* อ่านจาก nio-perov-db/.env
+
+services:
+
+  nio-perov-db:
+    container_name: nio-perov-db
+    image: postgres:18
+    restart: unless-stopped
+    ports:
+      - "4467:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      TZ: Asia/Bangkok
+    volumes:
+      - ./databasepg:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nio-perov-net
+
+  nio-perov-minio:
+    container_name: nio-perov-minio
+    image: minio/minio
+    restart: unless-stopped
+    ports:
+      - "4000:9000"
+      - "4001:4001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server /data --console-address ":4001"
+    volumes:
+      - ./minio-data:/data
+    networks:
+      - nio-perov-net
+
+networks:
+  nio-perov-net:
+    name: nio-perov-net
+    external: true
