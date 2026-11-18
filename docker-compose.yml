@@ -25,21 +25,21 @@ services:
     networks:
       - nio-perov-net
 
-  nio-perov-minio:
-    container_name: nio-perov-minio
-    image: minio/minio
-    restart: unless-stopped
-    ports:
-      - "4000:9000"
-      - "4001:4001"
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-    command: server /data --console-address ":4001"
-    volumes:
-      - ./minio-data:/data
-    networks:
-      - nio-perov-net
+  # nio-perov-minio:
+  #   container_name: nio-perov-minio
+  #   image: minio/minio
+  #   restart: unless-stopped
+  #   ports:
+  #     - "4000:9000"
+  #     - "4001:4001"
+  #   environment:
+  #     MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+  #     MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+  #   command: server /data --console-address ":4001"
+  #   volumes:
+  #     - ./minio-data:/data
+  #   networks:
+  #     - nio-perov-net
 
 networks:
   nio-perov-net:
